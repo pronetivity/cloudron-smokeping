@@ -1,0 +1,73 @@
+*** Alerts ***
+
+# To configure alert recipients, set SMOKEPING_ALERT_TO in /app/data/.env:
+#   SMOKEPING_ALERT_TO=admin@example.com,ops@example.com
+#
+# For per-target recipients, add 'alertto' to the target in /app/data/config/Targets:
+#   ++ MyServer
+#   host = example.com
+#   alerts = host-down, loss-major
+#   alertto = oncall@example.com
+#
+# No alerts are active by default. To enable alerts on a target, add:
+#   alerts = loss-major, rtt-high
+# to the target definition in /app/data/config/Targets
+
+to = __ALERT_TO__
+from = __MAIL_FROM__
+
+# --- Loss alerts ---
+
++loss-minor
+type = loss
+pattern = >5%,>5%,>5%
+comment = Minor packet loss: >5% for 3 consecutive measurements
+
++loss-major
+type = loss
+pattern = >20%,>20%,>20%
+comment = Major packet loss: >20% for 3 consecutive measurements
+
++loss-total
+type = loss
+pattern = ==100%,==100%,==100%
+comment = Target unreachable: 100% loss for 3 consecutive measurements
+
++loss-recovered
+type = loss
+pattern = ==100%,==100%,==100%,<5%,<5%,<5%
+comment = Target recovered after total loss
+
+# --- Latency alerts ---
+
++rtt-high
+type = rtt
+pattern = >200,>200,>200
+comment = High latency: >200ms for 3 consecutive measurements
+
++rtt-very-high
+type = rtt
+pattern = >500,>500,>500
+comment = Very high latency: >500ms for 3 consecutive measurements
+
++rtt-spike
+type = rtt
+pattern = <50,<50,<50,<50,<50,>200,>200,>200
+comment = Latency spike: jumped from <50ms to >200ms
+
++rtt-degraded
+type = rtt
+pattern = <100,<100,<100,>150,>150,>150,>150,>150
+comment = Sustained latency degradation: <100ms baseline jumped to >150ms
+
+# --- Combined alerts ---
+
++host-down
+type = loss
+pattern = ==100%,==100%,==100%,==100%,==100%
+comment = Host appears down: 100% loss for 5 consecutive measurements (25 minutes at default step)
+
++flapping
+type = loss
+pattern = ==0%,>50%,==0%,>50%,==0%
+comment = Connection flapping: alternating between healthy and major loss

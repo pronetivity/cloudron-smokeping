@@ -1,0 +1,342 @@
+*** Targets ***
+
+probe = FPing
+
+menu = Top
+title = Network Latency Grapher
+remark = Welcome to SmokePing. Edit /app/data/config/Targets to add your monitoring targets.
+
++ Local
+
+menu = Local
+title = Local Network
+
+++ LocalMachine
+menu = Local Machine
+title = Local Machine (localhost)
+host = localhost
+
++ DNSResolvers
+
+probe = DNS
+menu = DNS Resolvers
+title = Public DNS Resolvers
+
+++ GoogleDNS1
+menu = Google DNS (8.8.8.8)
+title = Google Public DNS - Primary
+host = 8.8.8.8
+
+++ GoogleDNS2
+menu = Google DNS (8.8.4.4)
+title = Google Public DNS - Secondary
+host = 8.8.4.4
+
+++ CloudflareDNS1
+menu = Cloudflare DNS (1.1.1.1)
+title = Cloudflare DNS - Primary
+host = 1.1.1.1
+
+++ CloudflareDNS2
+menu = Cloudflare DNS (1.0.0.1)
+title = Cloudflare DNS - Secondary
+host = 1.0.0.1
+
+++ Quad9
+menu = Quad9 (9.9.9.9)
+title = Quad9 DNS
+host = 9.9.9.9
+
+++ Quad9Secondary
+menu = Quad9 (149.112.112.112)
+title = Quad9 DNS - Secondary
+host = 149.112.112.112
+
+++ OpenDNS1
+menu = OpenDNS (208.67.222.222)
+title = OpenDNS - Primary
+host = 208.67.222.222
+
+++ OpenDNS2
+menu = OpenDNS (208.67.220.220)
+title = OpenDNS - Secondary
+host = 208.67.220.220
+
+++ AdGuard
+menu = AdGuard DNS (94.140.14.14)
+title = AdGuard DNS
+host = 94.140.14.14
+
+++ NextDNS
+menu = NextDNS (45.90.28.0)
+title = NextDNS
+host = 45.90.28.0
+
+++ ControlD
+menu = Control D (76.76.2.0)
+title = Control D DNS
+host = 76.76.2.0
+
++ RootDNS
+
+probe = FPing
+menu = Root DNS Servers
+title = Root DNS Servers (ICMP)
+
+++ RootA
+menu = A - Verisign
+title = a.root-servers.net (Verisign)
+host = 198.41.0.4
+
+++ RootB
+menu = B - USC-ISI
+title = b.root-servers.net (USC-ISI)
+host = 170.247.170.2
+
+++ RootC
+menu = C - Cogent
+title = c.root-servers.net (Cogent)
+host = 192.33.4.12
+
+++ RootD
+menu = D - UMD
+title = d.root-servers.net (University of Maryland)
+host = 199.7.91.13
+
+++ RootE
+menu = E - NASA
+title = e.root-servers.net (NASA Ames)
+host = 192.203.230.10
+
+++ RootF
+menu = F - ISC
+title = f.root-servers.net (ISC)
+host = 192.5.5.241
+
+++ RootG
+menu = G - DISA
+title = g.root-servers.net (DISA)
+host = 192.112.36.4
+
+++ RootH
+menu = H - US Army
+title = h.root-servers.net (US Army Research Lab)
+host = 198.97.190.53
+
+++ RootI
+menu = I - Netnod
+title = i.root-servers.net (Netnod)
+host = 192.36.148.17
+
+++ RootJ
+menu = J - Verisign
+title = j.root-servers.net (Verisign)
+host = 192.58.128.30
+
+++ RootK
+menu = K - RIPE NCC
+title = k.root-servers.net (RIPE NCC)
+host = 193.0.14.129
+
+++ RootL
+menu = L - ICANN
+title = l.root-servers.net (ICANN)
+host = 199.7.83.42
+
+++ RootM
+menu = M - WIDE
+title = m.root-servers.net (WIDE Project)
+host = 202.12.27.33
+
++ SocialNetworks
+
+probe = Curl
+menu = Social Networks
+title = Social Networks
+
+++ X
+menu = X (Twitter)
+title = X (Twitter)
+host = x.com
+
+++ Facebook
+menu = Facebook
+title = Facebook
+host = www.facebook.com
+
+++ Instagram
+menu = Instagram
+title = Instagram
+host = www.instagram.com
+
+++ LinkedIn
+menu = LinkedIn
+title = LinkedIn
+host = www.linkedin.com
+
+++ Reddit
+menu = Reddit
+title = Reddit
+host = www.reddit.com
+
+++ Mastodon
+menu = Mastodon
+title = Mastodon (mastodon.social)
+host = mastodon.social
+
+++ Bluesky
+menu = Bluesky
+title = Bluesky
+host = bsky.app
+
+++ YouTube
+menu = YouTube
+title = YouTube
+host = www.youtube.com
+
+++ TikTok
+menu = TikTok
+title = TikTok
+host = www.tiktok.com
+
+++ Threads
+menu = Threads
+title = Threads (Meta)
+host = www.threads.net
+
+++ Discord
+menu = Discord
+title = Discord
+host = discord.com
+
++ DevWorkflow
+
+probe = Curl
+menu = Dev & Workflow
+title = Developer Tools and Workflow
+
+++ GitHub
+menu = GitHub
+title = GitHub
+host = github.com
+
+++ GitLab
+menu = GitLab
+title = GitLab
+host = gitlab.com
+
+++ Bitbucket
+menu = Bitbucket
+title = Bitbucket
+host = bitbucket.org
+
+++ StackOverflow
+menu = Stack Overflow
+title = Stack Overflow
+host = stackoverflow.com
+
+++ NPM
+menu = npm Registry
+title = npm Registry
+host = registry.npmjs.org
+
+++ PyPI
+menu = PyPI
+title = Python Package Index
+host = pypi.org
+
+++ CratesIO
+menu = crates.io
+title = Rust Package Registry
+host = crates.io
+
+++ DockerHub
+menu = Docker Hub
+title = Docker Hub
+host = hub.docker.com
+
+++ GHContainerReg
+menu = GitHub Packages
+title = GitHub Container Registry
+host = ghcr.io
+
+++ RenovateBot
+menu = Renovate
+title = Renovate Bot
+host = app.renovatebot.com
+
+++ Sentry
+menu = Sentry
+title = Sentry Error Tracking
+host = sentry.io
+
+++ Grafana
+menu = Grafana Cloud
+title = Grafana Cloud
+host = grafana.com
+
+++ Proxmox
+menu = Proxmox
+title = Proxmox
+host = www.proxmox.com
+
+++ Kubernetes
+menu = Kubernetes
+title = Kubernetes
+host = kubernetes.io
+
++ CloudProviders
+
+probe = Curl
+menu = Cloud & Hosting
+title = Cloud Providers and Hosting
+
+++ Cloudron
+menu = Cloudron
+title = Cloudron
+host = www.cloudron.io
+
+++ CloudronDocs
+menu = Cloudron Docs
+title = Cloudron Documentation
+host = docs.cloudron.io
+
+++ CloudronForum
+menu = Cloudron Forum
+title = Cloudron Forum
+host = forum.cloudron.io
+
+++ Cloudflare
+menu = Cloudflare
+title = Cloudflare
+host = www.cloudflare.com
+
+++ AWS
+menu = AWS
+title = Amazon Web Services
+host = aws.amazon.com
+
+++ GCP
+menu = Google Cloud
+title = Google Cloud Platform
+host = cloud.google.com
+
+++ Azure
+menu = Azure
+title = Microsoft Azure
+host = azure.microsoft.com
+
+++ DigitalOcean
+menu = DigitalOcean
+title = DigitalOcean
+host = www.digitalocean.com
+
+++ Hetzner
+menu = Hetzner
+title = Hetzner
+host = www.hetzner.com
+
+++ LetsEncrypt
+menu = Let's Encrypt
+title = Let's Encrypt
+host = letsencrypt.org

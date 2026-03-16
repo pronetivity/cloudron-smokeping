@@ -1,0 +1,51 @@
+*** Presentation ***
+
+template = /app/code/smokeping/etc/basepage.html.dist
+htmltitle = yes
+graphborders = no
+
++ charts
+
+menu = Charts
+title = The most interesting destinations
+
+++ loss
+sorter = Loss(entries=>10)
+title = Top Packet Loss
+menu = Loss
+format = Packets Lost %f
+
+++ max
+sorter = Max(entries=>10)
+title = Top Max Roundtrip Time
+menu = by Max
+format = Max Roundtrip Time %f seconds
+
+++ median
+sorter = Median(entries=>10)
+title = Top Median Roundtrip Time
+menu = by Median
+format = Median RTT %f seconds
+
+++ stddev
+sorter = StdDev(entries=>10)
+title = Top Standard Deviation
+menu = Std Deviation
+format = Standard Deviation %f
+
++ overview
+
+width = 600
+height = 50
+range = 10h
+
++ detail
+
+width = 600
+height = 200
+unison_tolerance = 2
+
+"Last 3 Hours"    3h
+"Last 30 Hours"   30h
+"Last 10 Days"    10d
+"Last 360 Days"   360d

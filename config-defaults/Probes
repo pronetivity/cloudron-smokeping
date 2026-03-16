@@ -1,0 +1,15 @@
+*** Probes ***
+
++ FPing
+
+binary = /usr/bin/fping
+
++ DNS
+
+binary = /usr/bin/dig
+lookup = google.com
+
++ Curl
+
+binary = /usr/bin/curl
+urlformat = https://%host%/

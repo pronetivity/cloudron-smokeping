@@ -1,0 +1,13 @@
+*** General ***
+
+owner    = __OWNER__
+contact  = __CONTACT__
+mailhost = __SMTP_SERVER__
+sendmail = /usr/sbin/ssmtp
+imgcache = /app/data/cache
+imgurl   = cache
+datadir  = /app/data/data
+piddir   = /run/smokeping
+cgiurl   = __CGI_URL__
+smokemail = /app/code/smokeping/etc/smokemail.dist
+tmail = /app/code/smokeping/etc/tmail.dist

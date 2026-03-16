@@ -1,0 +1,7 @@
+.git
+*.md
+!DESCRIPTION.md
+!POSTINSTALL.md
+!CHANGELOG.md
+screenshots/
+logo.png

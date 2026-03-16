@@ -1,0 +1,12 @@
+*** Database ***
+
+step     = __STEP__
+pings    = __PINGS__
+
+AVERAGE  0.5   1  28800
+AVERAGE  0.5  12   9600
+    MIN  0.5  12   9600
+    MAX  0.5  12   9600
+AVERAGE  0.5 144   2400
+    MAX  0.5 144   2400
+    MIN  0.5 144   2400

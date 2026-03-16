@@ -1,0 +1,77 @@
+# SmokePing Cloudron Environment Overrides
+# ==========================================
+#
+# This file is sourced by start.sh on every container startup.
+# Uncomment and modify variables to override Cloudron defaults.
+# Changes take effect after restarting the app from the Cloudron dashboard.
+#
+# Note: Cloudron mail variables (CLOUDRON_MAIL_*) are set automatically
+# by the platform. Only override them here if you need custom values.
+
+# --------------------------------------------------------------------------
+# Timezone
+# --------------------------------------------------------------------------
+# Set the container timezone. Affects graph timestamps and log times.
+# See: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+#
+# TZ=Europe/Berlin
+
+# --------------------------------------------------------------------------
+# General Settings
+# --------------------------------------------------------------------------
+# Owner name and contact email displayed in the SmokePing web interface.
+#
+# SMOKEPING_OWNER=SmokePing Admin
+# SMOKEPING_CONTACT=admin@foo.bar
+
+# --------------------------------------------------------------------------
+# Performance Tuning
+# --------------------------------------------------------------------------
+# Step: seconds between measurements (default: 300 = 5 minutes).
+# Lower values give finer granularity but increase load and bandwidth.
+#
+# Pings: number of pings per measurement (default: 20).
+# More pings give better statistics but increase network traffic.
+#
+# SMOKEPING_STEP=300
+# SMOKEPING_PINGS=20
+
+# --------------------------------------------------------------------------
+# HTTP Basic Auth
+# --------------------------------------------------------------------------
+# Override the auto-generated admin credentials.
+# Useful for automation, scripting, or setting known credentials.
+# On first run, random credentials are generated and saved to
+# /app/data/htpasswd.txt. These variables override them on every startup.
+#
+# SMOKEPING_ADMIN_USER=admin
+# SMOKEPING_ADMIN_PASS=changeme
+
+# --------------------------------------------------------------------------
+# Alert Recipients
+# --------------------------------------------------------------------------
+# Who receives SmokePing alert emails. Comma-separated for multiple.
+# Defaults to the Cloudron app sender address if not set.
+#
+# SMOKEPING_ALERT_TO=admin@example.com,ops@example.com
+
+# --------------------------------------------------------------------------
+# Mail / SMTP Overrides
+# --------------------------------------------------------------------------
+# These override the Cloudron-provided SMTP settings.
+# Only use if you need a different mail relay than Cloudron's built-in mail.
+#
+# CLOUDRON_MAIL_SMTP_SERVER=smtp.example.com
+# CLOUDRON_MAIL_SMTP_PORT=587
+# CLOUDRON_MAIL_SMTP_USERNAME=user@example.com
+# CLOUDRON_MAIL_SMTP_PASSWORD=secret
+# CLOUDRON_MAIL_FROM=smokeping@example.com
+
+# --------------------------------------------------------------------------
+# Application URL
+# --------------------------------------------------------------------------
+# Override the app origin used in SmokePing's cgiurl setting.
+# Normally auto-detected from Cloudron. Only set if using a custom domain
+# or reverse proxy in front of Cloudron.
+#
+# CLOUDRON_APP_ORIGIN=https://smokeping.example.com

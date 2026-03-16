@@ -1,0 +1,35 @@
+{
+  "id": "org.smokeping.cloudronapp",
+  "title": "SmokePing",
+  "author": "ProNetivity Inc. <support@pronetivity.ph>",
+  "description": "file://DESCRIPTION.md",
+  "tagline": "Network latency monitoring with RRDtool graphs",
+  "version": "2.9.0",
+  "healthCheckPath": "/healthz",
+  "httpPort": 8000,
+  "manifestVersion": 2,
+  "capabilities": ["ping"],
+  "addons": {
+    "localstorage": {},
+    "sendmail": {}
+  },
+  "memoryLimit": 268435456,
+  "minBoxVersion": "9.1.0",
+  "postInstallMessage": "file://POSTINSTALL.md",
+  "changelog": "file://CHANGELOG.md",
+  "website": "https://oss.oetiker.ch/smokeping/",
+  "contactEmail": "support@pronetivity.ph",
+  "documentationUrl": "https://oss.oetiker.ch/smokeping/doc/index.en.html",
+  "forumUrl": "https://github.com/oetiker/SmokePing/issues",
+  "icon": "file://logo.png",
+  "checklist": {
+    "set-timezone": {
+      "message": "Set your timezone in `/app/data/.env` so graph timestamps display correctly"
+    },
+    "set-alert-recipients": {
+      "message": "Set alert recipients in `/app/data/.env` to receive monitoring alerts"
+    }
+  },
+  "mediaLinks": [],
+  "tags": ["monitoring", "network", "latency", "ping", "rrdtool"]
+}
