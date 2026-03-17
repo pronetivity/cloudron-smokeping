@@ -2,8 +2,6 @@
 
 Cloudron packaging for [SmokePing](https://oss.oetiker.ch/smokeping/) — a latency logging, graphing, and alerting system.
 
-[![Cloudron Install](https://cloudron.io/img/button.svg)](https://cloudron.io/button.html?app=org.smokeping.cloudronapp)
-
 ## Overview
 
 This repo contains only the Cloudron packaging files. SmokePing source is downloaded from [oetiker/SmokePing](https://github.com/oetiker/SmokePing) at build time.
