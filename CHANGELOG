@@ -1,17 +1,4 @@
-# Changelog
-
-All notable changes to this project are documented in this file.
-
-The format is based on [Keep a Changelog 1.1.0](https://keepachangelog.com/en/1.1.0/),
-and this project adheres to [Semantic Versioning 2.0.0](https://semver.org/spec/v2.0.0.html).
-See [VERSIONING.md](./VERSIONING.md) for the release workflow.
-
-Change categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
-
-## [Unreleased]
-
-## [2.9.0] - 2026-05-13
-
+[2.9.0]
 ### Added
 - Initial Cloudron packaging of SmokePing 2.9.0.
 - Nginx with FastCGI and HTTP basic auth. Credentials are auto-generated on first install at `/app/data/htpasswd.txt` and can be overridden via `SMOKEPING_ADMIN_USER` / `SMOKEPING_ADMIN_PASS` in `/app/data/.env`.
@@ -24,6 +11,3 @@ Change categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Securi
 - `scripts/release.js` one-command release tool that bumps `CloudronManifest.json#version`, rewrites `CHANGELOG.md`, regenerates the per-version `./CHANGELOG` snippet, commits, and tags.
 - `.github/workflows/cloudron-image.yml` — on `v*` tag push, builds the Cloudron image, pushes `ghcr.io/<owner>/cloudron-smokeping:vX.Y.Z` + `:latest`, creates a GitHub Release with the matching changelog body, runs `cloudron versions add`, and commits the updated `CloudronVersions.json` back to `main`.
 - `VERSIONING.md` and `PUBLISHING.md` documenting the release and community-app catalog flows.
-
-[Unreleased]: https://github.com/pronetivity/cloudron-smokeping/compare/v2.9.0...HEAD
-[2.9.0]: https://github.com/pronetivity/cloudron-smokeping/releases/tag/v2.9.0

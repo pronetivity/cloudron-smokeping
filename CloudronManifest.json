@@ -16,12 +16,19 @@
   "memoryLimit": 268435456,
   "minBoxVersion": "9.1.0",
   "postInstallMessage": "file://POSTINSTALL.md",
-  "changelog": "file://CHANGELOG.md",
+  "changelog": "file://CHANGELOG",
   "website": "https://oss.oetiker.ch/smokeping/",
   "contactEmail": "support@pronetivity.ph",
   "documentationUrl": "https://oss.oetiker.ch/smokeping/doc/index.en.html",
   "forumUrl": "https://github.com/oetiker/SmokePing/issues",
   "icon": "file://logo.png",
+  "iconUrl": "https://raw.githubusercontent.com/pronetivity/cloudron-smokeping/master/logo.png",
+  "packagerName": "ProNetivity Inc.",
+  "packagerUrl": "https://pronetivity.ph",
+  "upstreamLicense": {
+    "name": "GPL-2.0",
+    "url": "https://github.com/oetiker/SmokePing/blob/master/COPYING"
+  },
   "checklist": {
     "set-timezone": {
       "message": "Set your timezone in `/app/data/.env` so graph timestamps display correctly"
@@ -30,6 +37,8 @@
       "message": "Set alert recipients in `/app/data/.env` to receive monitoring alerts"
     }
   },
-  "mediaLinks": [],
+  "mediaLinks": [
+    "https://raw.githubusercontent.com/pronetivity/cloudron-smokeping/master/screenshots/smokeping-01.png"
+  ],
   "tags": ["monitoring", "network", "latency", "ping", "rrdtool"]
 }
