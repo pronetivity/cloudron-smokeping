@@ -4,11 +4,13 @@
   "author": "ProNetivity Inc. <support@pronetivity.ph>",
   "description": "file://DESCRIPTION.md",
   "tagline": "Network latency monitoring with RRDtool graphs",
-  "version": "2.9.0",
+  "version": "2.9.1",
   "healthCheckPath": "/healthz",
   "httpPort": 8000,
   "manifestVersion": 2,
-  "capabilities": ["ping"],
+  "capabilities": [
+    "ping"
+  ],
   "addons": {
     "localstorage": {},
     "sendmail": {}
@@ -40,5 +42,11 @@
   "mediaLinks": [
     "https://raw.githubusercontent.com/pronetivity/cloudron-smokeping/master/screenshots/smokeping-01.png"
   ],
-  "tags": ["monitoring", "network", "latency", "ping", "rrdtool"]
+  "tags": [
+    "monitoring",
+    "network",
+    "latency",
+    "ping",
+    "rrdtool"
+  ]
 }

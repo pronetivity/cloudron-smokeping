@@ -10,6 +10,11 @@ Change categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Securi
 
 ## [Unreleased]
 
+## [2.9.1] - 2026-05-13
+
+### Fixed
+- CI workflow now fires on `v*` tag pushes. The previous `paths:` filter on the `push:` trigger silently swallowed tag events when the tagged commit was already reachable on `master`. Branch push triggers run unconditionally now; PR triggers keep their path filter.
+
 ## [2.9.0] - 2026-05-13
 
 ### Added
@@ -25,5 +30,6 @@ Change categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Securi
 - `.github/workflows/cloudron-image.yml` — on `v*` tag push, builds the Cloudron image, pushes `ghcr.io/<owner>/cloudron-smokeping:vX.Y.Z` + `:latest`, creates a GitHub Release with the matching changelog body, runs `cloudron versions add`, and commits the updated `CloudronVersions.json` back to `main`.
 - `VERSIONING.md` and `PUBLISHING.md` documenting the release and community-app catalog flows.
 
-[Unreleased]: https://github.com/pronetivity/cloudron-smokeping/compare/v2.9.0...HEAD
+[Unreleased]: https://github.com/pronetivity/cloudron-smokeping/compare/v2.9.1...HEAD
+[2.9.1]: https://github.com/pronetivity/cloudron-smokeping/compare/v2.9.0...v2.9.1
 [2.9.0]: https://github.com/pronetivity/cloudron-smokeping/releases/tag/v2.9.0
