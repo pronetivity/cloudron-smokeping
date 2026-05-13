@@ -160,7 +160,7 @@ jobs:
           fi
           cloudron versions add --state published
 
-      - name: Commit CloudronVersions.json back to main
+      - name: Commit CloudronVersions.json back to master
         if: startsWith(github.ref, 'refs/tags/v')
         env:
           REF_NAME: ${{ github.ref_name }}
