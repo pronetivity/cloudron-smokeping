@@ -1,4 +1,63 @@
 {
     "stable": true,
-    "versions": {}
+    "versions": {
+        "2.9.1": {
+            "manifest": {
+                "id": "org.smokeping.cloudronapp",
+                "title": "SmokePing",
+                "author": "ProNetivity Inc. <support@pronetivity.ph>",
+                "description": "SmokePing is a latency logging and graphing and alerting system. It consists of a daemon process which organizes the latency measurements and a web interface which presents the graphs.\n\n### Features\n\n- **Multi-Protocol Monitoring** — ICMP, DNS, HTTP, SSH, and 40+ probe types\n- **RRDtool Graphs** — SVG graphs showing latency distribution, packet loss, and trends\n- **Alerting** — 10 pre-defined alert rules for loss, latency spikes, and flapping\n- **Charts** — Default landing page shows top packet loss across all targets\n\n### Cloudron Extras\n\n- ~80 pre-configured targets: DNS resolvers, all 13 root servers, social networks, dev tools, cloud providers\n- Email alerts via Cloudron mail, HTTP basic auth with auto-generated credentials\n- All settings configurable via `/app/data/.env` — no config file editing required\n- Split config files under `/app/data/config/` for advanced customization\n",
+                "tagline": "Network latency monitoring with RRDtool graphs",
+                "version": "2.9.1",
+                "healthCheckPath": "/healthz",
+                "httpPort": 8000,
+                "manifestVersion": 2,
+                "capabilities": [
+                    "ping"
+                ],
+                "addons": {
+                    "localstorage": {},
+                    "sendmail": {}
+                },
+                "memoryLimit": 268435456,
+                "minBoxVersion": "9.1.0",
+                "postInstallMessage": "Your SmokePing instance is ready!\n\n### Login Credentials\n\nHTTP Basic Auth credentials were generated on first install. View them via the [Web Terminal](https://docs.cloudron.io/apps/#web-terminal):\n\n```\ncat /app/data/htpasswd.txt\n```\n\nYou can also set custom credentials in `/app/data/.env`:\n\n```\nSMOKEPING_ADMIN_USER=admin\nSMOKEPING_ADMIN_PASS=your-password\n```\n\nReboot the app to apply changes.\n\n### Configuration\n\nAll settings are configurable via `/app/data/.env` — see the file for available variables.\n\nMost importantly, make sure to set the timezone and email recipients for alerts:\n\n```\nTZ=Europe/Berlin\nSMOKEPING_ALERT_TO=admin@example.com,ops@example.com\n```\n\nFor advanced customization, edit the split config files in `/app/data/config/`. Deleting a config file restores its default on next restart.\n\n### Test Email Delivery\n\n```\n/app/pkg/test-email.sh your@email.com\n```\n",
+                "changelog": "### Fixed\n- CI workflow now fires on `v*` tag pushes. The previous `paths:` filter on the `push:` trigger silently swallowed tag events when the tagged commit was already reachable on `master`. Branch push triggers run unconditionally now; PR triggers keep their path filter.\n",
+                "website": "https://oss.oetiker.ch/smokeping/",
+                "contactEmail": "support@pronetivity.ph",
+                "documentationUrl": "https://oss.oetiker.ch/smokeping/doc/index.en.html",
+                "forumUrl": "https://github.com/oetiker/SmokePing/issues",
+                "icon": "file://logo.png",
+                "iconUrl": "https://raw.githubusercontent.com/pronetivity/cloudron-smokeping/master/logo.png",
+                "packagerName": "ProNetivity Inc.",
+                "packagerUrl": "https://pronetivity.ph",
+                "upstreamLicense": {
+                    "name": "GPL-2.0",
+                    "url": "https://github.com/oetiker/SmokePing/blob/master/COPYING"
+                },
+                "checklist": {
+                    "set-timezone": {
+                        "message": "Set your timezone in `/app/data/.env` so graph timestamps display correctly"
+                    },
+                    "set-alert-recipients": {
+                        "message": "Set alert recipients in `/app/data/.env` to receive monitoring alerts"
+                    }
+                },
+                "mediaLinks": [
+                    "https://raw.githubusercontent.com/pronetivity/cloudron-smokeping/master/screenshots/smokeping-01.png"
+                ],
+                "tags": [
+                    "monitoring",
+                    "network",
+                    "latency",
+                    "ping",
+                    "rrdtool"
+                ],
+                "dockerImage": "ghcr.io/pronetivity/cloudron-smokeping:v2.9.1"
+            },
+            "creationDate": "Wed, 13 May 2026 16:11:07 GMT",
+            "ts": "Wed, 13 May 2026 16:11:07 GMT",
+            "publishState": "published"
+        }
+    }
 }
