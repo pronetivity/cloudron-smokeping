@@ -1,23 +1,14 @@
 name: Build Cloudron image
 
 on:
+  # Note: NO `paths:` filter on push. GitHub's path-diff for tag pushes is
+  # unreliable when the tagged commit is the first tag in the repo or
+  # otherwise lacks a clear comparison base; adding `paths:` here silently
+  # swallowed the v2.9.0 tag event. Branch pushes happen infrequently
+  # enough that always building is fine. PRs still honor a path filter.
   push:
     branches: [master]
     tags: ['v*']
-    paths:
-      - 'Dockerfile'
-      - 'CloudronManifest.json'
-      - 'nginx.conf'
-      - 'start.sh'
-      - 'test-email.sh'
-      - 'supervisor/**'
-      - 'config-defaults/**'
-      - 'DESCRIPTION.md'
-      - 'POSTINSTALL.md'
-      - 'CHANGELOG'
-      - 'logo.png'
-      - 'screenshots/**'
-      - '.github/workflows/cloudron-image.yml'
   pull_request:
     paths:
       - 'Dockerfile'
