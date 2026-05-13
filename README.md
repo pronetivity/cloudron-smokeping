@@ -8,6 +8,7 @@
 <div align="center">
 
 [![License: GPL-2.0](https://img.shields.io/badge/License-GPL--2.0-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
+[![Cloudron community app](https://img.shields.io/badge/Cloudron-community%20app-3aa7e7.svg)](https://forum.cloudron.io/category/community-apps)
 
 </div>
 
@@ -19,6 +20,7 @@ The upstream SmokePing project is the authoritative source for the daemon, probe
 
 - Upstream: [oetiker/SmokePing](https://github.com/oetiker/SmokePing) — GPL-2.0
 - Packaging: [pronetivity/cloudron-smokeping](https://github.com/pronetivity/cloudron-smokeping) — GPL-2.0
+- Container image: `ghcr.io/pronetivity/cloudron-smokeping` (public on GHCR; no registry credentials needed)
 
 ## Features
 
@@ -33,27 +35,58 @@ The upstream SmokePing project is the authoritative source for the daemon, probe
 
 ## Installing on a Cloudron
 
+The catalog URL is:
+
+```
+https://raw.githubusercontent.com/pronetivity/cloudron-smokeping/master/CloudronVersions.json
+```
+
+### From the dashboard
+
+1. Cloudron dashboard → **Settings → App Store → Add custom app**.
+2. Paste the catalog URL above.
+3. Click **Install** on SmokePing, pick a subdomain, confirm.
+
+### From the CLI
+
 ```bash
 cloudron install --server my.example.com \
                  --versions-url https://raw.githubusercontent.com/pronetivity/cloudron-smokeping/master/CloudronVersions.json \
                  --location smokeping.example.com
 ```
 
-Or in the Cloudron dashboard: **Settings → App Store → Add custom app** and paste the same `CloudronVersions.json` URL.
+Either way, new versions appear in your Cloudron's update notifications automatically as they land in the catalog.
 
-See [`PUBLISHING.md`](./PUBLISHING.md) for all install paths (`--versions-url`, `--image`, server-side build) and the publish workflow.
+See [`PUBLISHING.md`](./PUBLISHING.md) for the other install paths (`--image`, server-side build) and the release workflow.
+
+## First login
+
+Right after install, retrieve the auto-generated basic-auth credentials via the [Web Terminal](https://docs.cloudron.io/apps/#web-terminal):
+
+```bash
+cat /app/data/htpasswd.txt
+```
+
+To set your own credentials instead, edit `/app/data/.env`:
+
+```bash
+SMOKEPING_ADMIN_USER=admin
+SMOKEPING_ADMIN_PASS=your-password
+```
+
+Restart the app to apply.
 
 ## Configuration
 
-After install, edit `/app/data/.env` via the [Web Terminal](https://docs.cloudron.io/apps/#web-terminal):
+All operator-facing knobs live in `/app/data/.env`. The two most important ones:
 
 ```bash
-TZ=Europe/Berlin
-SMOKEPING_ALERT_TO=admin@example.com,ops@example.com
-SMOKEPING_OWNER=My Company
+TZ=Europe/Berlin                                  # graph timestamps
+SMOKEPING_ALERT_TO=admin@example.com,ops@example.com   # email alert recipients
+SMOKEPING_OWNER=My Company                        # shown in the UI footer
 ```
 
-Restart the app for changes to take effect. For advanced customization, edit the split config files under `/app/data/config/`.
+Restart the app for changes to take effect. For deeper customization, edit the split config files under `/app/data/config/` (`General`, `Database`, `Alerts`, `Presentation`, `Probes`, `Targets`). Deleting any of them restores the bundled default on the next restart.
 
 ## Testing email delivery
 
@@ -71,18 +104,22 @@ Local container build (no Cloudron required):
 docker build -t cloudron-smokeping:dev .
 ```
 
-Test against a Cloudron, building on the server:
+Test against a Cloudron, building on the server (no GHCR pull):
 
 ```bash
 cloudron install --server my.example.com --location smokeping.example.com
 cloudron update  --server my.example.com --app smokeping.example.com
 ```
 
-For the full release workflow (`scripts/release.js`, GitHub Actions build, GHCR push, GitHub Release, `cloudron versions add`) see [`VERSIONING.md`](./VERSIONING.md) and [`PUBLISHING.md`](./PUBLISHING.md).
+## Releasing
+
+`node scripts/release.js <patch | minor | major | X.Y.Z>` does the whole bump — `CloudronManifest.json`, `CHANGELOG.md`, the per-version `CHANGELOG` snippet, the commit, and the annotated tag. Push the commit and the tag and CI takes over: builds the image, pushes to GHCR, opens a GitHub Release, runs `cloudron versions add`, and commits the updated `CloudronVersions.json` back to `master`.
+
+Full details in [`VERSIONING.md`](./VERSIONING.md) and [`PUBLISHING.md`](./PUBLISHING.md).
 
 ## Reporting bugs
 
-For issues with the **Cloudron packaging** (install, config-defaults, nginx, supervisor, env handling), open an issue here: [pronetivity/cloudron-smokeping/issues](https://github.com/pronetivity/cloudron-smokeping/issues).
+For issues with the **Cloudron packaging** (install, config-defaults, nginx, supervisor, env handling, alerting glue), open an issue here: [pronetivity/cloudron-smokeping/issues](https://github.com/pronetivity/cloudron-smokeping/issues).
 
 For issues with **SmokePing itself** (probes, RRD storage, the web UI), open an issue upstream: [oetiker/SmokePing/issues](https://github.com/oetiker/SmokePing/issues).
 
