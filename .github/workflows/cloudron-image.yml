@@ -1,0 +1,182 @@
+name: Build Cloudron image
+
+on:
+  push:
+    branches: [master]
+    tags: ['v*']
+    paths:
+      - 'Dockerfile'
+      - 'CloudronManifest.json'
+      - 'nginx.conf'
+      - 'start.sh'
+      - 'test-email.sh'
+      - 'supervisor/**'
+      - 'config-defaults/**'
+      - 'DESCRIPTION.md'
+      - 'POSTINSTALL.md'
+      - 'CHANGELOG'
+      - 'logo.png'
+      - 'screenshots/**'
+      - '.github/workflows/cloudron-image.yml'
+  pull_request:
+    paths:
+      - 'Dockerfile'
+      - 'CloudronManifest.json'
+      - 'nginx.conf'
+      - 'start.sh'
+      - 'supervisor/**'
+      - 'config-defaults/**'
+      - '.github/workflows/cloudron-image.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: cloudron-image-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Derive image metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/cloudron-smokeping
+          tags: |
+            type=ref,event=tag
+            type=raw,value=latest,enable=${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v') }}
+            type=raw,value=edge,enable=${{ github.ref == 'refs/heads/master' && github.event_name == 'push' }}
+            type=sha,format=short,enable=${{ github.event_name == 'pull_request' }}
+
+      - name: Build${{ github.event_name == 'pull_request' && '' || ' and push' }}
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          platforms: linux/amd64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Extract CHANGELOG section for tag
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          REF_NAME: ${{ github.ref_name }}
+          IMAGE: ghcr.io/${{ github.repository_owner }}/cloudron-smokeping
+          DIGEST: ${{ steps.build.outputs.digest }}
+        run: |
+          set -euo pipefail
+          version="${REF_NAME#v}"
+          awk -v ver="$version" '
+            $0 ~ "^## \\[" ver "\\]" { flag=1; next }
+            flag && /^## \[/ { exit }
+            flag { print }
+          ' CHANGELOG.md > release-body.md
+
+          if ! [ -s release-body.md ]; then
+            echo "No [$version] section found in CHANGELOG.md; falling back to short notice."
+            printf 'Release %s.\n' "$REF_NAME" > release-body.md
+          fi
+
+          {
+            echo ""
+            echo "## Cloudron install"
+            echo ""
+            echo '```'
+            echo "cloudron install --image $IMAGE:$REF_NAME --location <subdomain>"
+            echo '```'
+            echo ""
+            echo "Image: \`$IMAGE:$REF_NAME\`"
+            echo "Digest: \`$DIGEST\`"
+          } >> release-body.md
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          body_path: release-body.md
+          draft: false
+          prerelease: ${{ contains(github.ref_name, '-') }}
+          fail_on_unmatched_files: false
+
+      - name: Set up Node for Cloudron CLI
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Cloudron CLI
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: npm install -g cloudron@^7
+
+      - name: Catalog version in CloudronVersions.json
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          IMAGE_REF: ghcr.io/${{ github.repository_owner }}/cloudron-smokeping:${{ github.ref_name }}
+          REPOSITORY: ghcr.io/${{ github.repository_owner }}/cloudron-smokeping
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs = require('fs');
+          const path = require('path');
+          const cfgPath = path.join(process.env.HOME, '.cloudron.json');
+          let cfg = {};
+          try { cfg = JSON.parse(fs.readFileSync(cfgPath, 'utf8')); } catch (_) {}
+          cfg.apps = cfg.apps || {};
+          cfg.apps[process.cwd()] = {
+            repository: process.env.REPOSITORY,
+            dockerImage: process.env.IMAGE_REF
+          };
+          fs.writeFileSync(cfgPath, JSON.stringify(cfg, null, 4));
+          console.log('recorded image:', process.env.IMAGE_REF);
+          NODE
+
+          version="${REF_NAME#v}"
+          if jq -e --arg v "$version" '.versions[$v]' CloudronVersions.json > /dev/null; then
+            echo "Version $version already cataloged; skipping."
+            exit 0
+          fi
+          cloudron versions add --state published
+
+      - name: Commit CloudronVersions.json back to main
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          REF_NAME: ${{ github.ref_name }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          if git diff --quiet CloudronVersions.json; then
+            echo "No catalog changes to commit."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          updated=$(cat CloudronVersions.json)
+          git fetch origin master
+          git checkout -B master origin/master
+          printf '%s' "$updated" > CloudronVersions.json
+          git add CloudronVersions.json
+          git commit -m "chore: catalogs ${REF_NAME} in CloudronVersions.json [skip ci]"
+          git push origin master

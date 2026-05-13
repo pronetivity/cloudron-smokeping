@@ -14,7 +14,9 @@ fi
 
 MAIL_FROM="${CLOUDRON_MAIL_FROM:-smokeping@localhost}"
 RECIPIENT="${1:-${SMOKEPING_ALERT_TO:-${MAIL_FROM}}}"
-HOSTNAME=$(hostname)
+HOSTNAME="$(hostname)"
+APP_DOMAIN="${CLOUDRON_APP_DOMAIN:-unset}"
+CLOUDRON_DOMAIN="${CLOUDRON_WEBADMIN_ORIGIN:-unset}"
 DATE=$(date -R)
 
 echo "=> Sending test email to: ${RECIPIENT}"
@@ -29,7 +31,9 @@ Date: ${DATE}
 
 This is a test email from your SmokePing Cloudron instance.
 
-Host: ${HOSTNAME}
+Container ID: ${HOSTNAME}
+Cloudron App Domain: ${APP_DOMAIN}
+Cloudron Host: ${CLOUDRON_DOMAIN}
 Time: ${DATE}
 
 If you received this email, your SmokePing alert delivery is working correctly.

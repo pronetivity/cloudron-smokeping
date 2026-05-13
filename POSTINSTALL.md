@@ -15,9 +15,18 @@ SMOKEPING_ADMIN_USER=admin
 SMOKEPING_ADMIN_PASS=your-password
 ```
 
+Reboot the app to apply changes.
+
 ### Configuration
 
 All settings are configurable via `/app/data/.env` — see the file for available variables.
+
+Most importantly, make sure to set the timezone and email recipients for alerts:
+
+```
+TZ=Europe/Berlin
+SMOKEPING_ALERT_TO=admin@example.com,ops@example.com
+```
 
 For advanced customization, edit the split config files in `/app/data/config/`. Deleting a config file restores its default on next restart.
 
